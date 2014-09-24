@@ -8,6 +8,9 @@ export DEISCTL_UNITS=${DEISCTL_UNITS:-${GOPATH:-/gopath}/src/github.com/deis/dei
 if [ -n "$*" ]; then
   deisctl $*
 else
+  if mountpoint -q /units; then
+    cp -a $DEISCTL_UNITS/ /units/
+  fi
   if mountpoint -q /target; then
     echo "Installing deisctl to /target"
     cp /gopath/bin/deisctl /target
