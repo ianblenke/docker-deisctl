@@ -1,0 +1,21 @@
+#!/bin/bash
+
+export DEISCTL_UNITS=${DEISCTL_UNITS:-${GOPATH:-/gopath}/src/github.com/deis/deisctl/units} \
+       SSH_USER=${SSH_USER:-core}
+
+[ -n "$SSH_KEY" ]  && echo "$SSH_KEY" > ~/.ssh/id_rsa
+
+if [ -n "$*" ]; then
+  deisctl $*
+else
+  if mountpoint -q /target; then
+    echo "Installing deisctl to /target"
+    cp /gopath/bin/deisctl /target
+  else
+    echo "/target is not a mountpoint."
+    echo "You can either:"
+    echo "- re-run this container with -v /usr/local/bin:/target"
+    echo "- extract the deisctl binary (located at /gopath/bin/deisctl)"
+  fi
+fi
+
