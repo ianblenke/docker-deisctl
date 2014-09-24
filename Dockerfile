@@ -10,7 +10,7 @@ RUN go get github.com/tools/godep && \
     mkdir -p /.ssh && \
     ln -s /gopath/bin/deisctl /deisctl
 
-ADD vagrant_insecure_private_key /.ssh/id_rsa
+ADD https://github.com/mitchellh/vagrant/blob/master/keys/vagrant /.ssh/id_rsa
 
 ADD installer /installer
 CMD /installer
