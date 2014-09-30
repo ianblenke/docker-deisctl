@@ -1,0 +1,16 @@
+#cloud-config
+
+coreos:
+  units:
+    - name: deisctl-bootstrap.service
+      command: start
+      content: |
+        [Unit]
+        After=docker.service
+
+        [Service]
+        ExecStartPre=/usr/bin/docker pull ianblenke/deisctl
+        ExecStart=/usr/bin/docker run --rm ianblenke/deisctl /installer --endpoint=http://172.16.42.1:4001 install platform
+        ExecStart=/usr/bin/docker run --rm ianblenke/deisctl /installer --endpoint=http://172.16.42.1:4001 start platform
+        RemainAfterExit=no
+        Type=oneshot
